@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import posthog from "posthog-js";
 
 export default function SearchBar({ value, onChange, onSubmit, quickPicks = [], disabled }) {
   const placeholder = useMemo(
@@ -8,6 +9,10 @@ export default function SearchBar({ value, onChange, onSubmit, quickPicks = [], 
 
   function handleFormSubmit(e) {
     e.preventDefault();
+    const companyName = String(value ?? "").trim();
+    if (companyName && import.meta.env.VITE_POSTHOG_KEY) {
+      posthog.capture("company_searched", { company: companyName });
+    }
     onSubmit(value);
   }
 

@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import posthog from "posthog-js";
 import UnitEconomics from "./UnitEconomics.jsx";
 import Scenarios from "./Scenarios.jsx";
 import Sensitivity from "./Sensitivity.jsx";
@@ -34,6 +35,11 @@ export default function ModelOutput({ analysis, sliders, setSliders }) {
     const cac = formatUsd(sliders.cac);
     return { p, m, c, cac };
   }, [sliders]);
+
+  useEffect(() => {
+    if (!company || !import.meta.env.VITE_POSTHOG_KEY) return;
+    posthog.capture("model_loaded", { company });
+  }, [company]);
 
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
@@ -94,7 +100,12 @@ export default function ModelOutput({ analysis, sliders, setSliders }) {
           {TABS.map((t) => (
             <button
               key={t.id}
-              onClick={() => setTab(t.id)}
+              onClick={() => {
+                if (import.meta.env.VITE_POSTHOG_KEY) {
+                  posthog.capture("tab_clicked", { tab: t.label });
+                }
+                setTab(t.id);
+              }}
               type="button"
               className={[
                 "font-mono text-xs px-3 py-2 rounded-lg border transition",
