@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minimal typography tuning for an internal-tool feel. */
+body {
+  font-feature-settings: "ss01" 1, "ss02" 1;
+}
+
