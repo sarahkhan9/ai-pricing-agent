@@ -35,6 +35,29 @@ export function paybackMonths(cacUsd, priceUsd, marginPercent) {
   return cac / monthlyGross;
 }
 
+/**
+ * ACV = monthly price x 12 x (1 - annual churn rate).
+ * Annual churn rate = monthly churn % x 12 (linear approximation).
+ */
+export function estimateAcv(priceUsd, monthlyChurnPercent) {
+  const price = safeNumber(priceUsd);
+  const monthlyChurn = safeNumber(monthlyChurnPercent);
+  const annualChurnPercent = monthlyChurn * 12;
+  const retentionFactor = Math.max(0, 1 - annualChurnPercent / 100);
+  return price * 12 * retentionFactor;
+}
+
+/**
+ * Average customer lifespan in years: (1 / monthly churn as decimal) / 12.
+ * e.g. 3% monthly -> 1/0.03 months / 12 = 2.8 years.
+ */
+export function avgLifespanYears(monthlyChurnPercent) {
+  const m = safeNumber(monthlyChurnPercent);
+  const churnSafe = Math.max(m, 0.0001);
+  const monthlyDecimal = churnSafe / 100;
+  return (1 / monthlyDecimal) / 12;
+}
+
 export function ratioColor(ratio) {
   if (!Number.isFinite(ratio)) return "green";
   if (ratio >= 3) return "green";

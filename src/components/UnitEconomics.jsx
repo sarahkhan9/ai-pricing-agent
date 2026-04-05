@@ -1,4 +1,15 @@
-import { ltv, ltvToCacRatio, paybackMonths, paybackColor, ratioColor, formatUsd, formatMonths, formatNumber } from "../utils/calculations.js";
+import {
+  ltv,
+  ltvToCacRatio,
+  paybackMonths,
+  paybackColor,
+  ratioColor,
+  formatUsd,
+  formatMonths,
+  formatNumber,
+  estimateAcv,
+  avgLifespanYears,
+} from "../utils/calculations.js";
 
 function toneStyles(tone) {
   if (tone === "green") {
@@ -64,6 +75,8 @@ export default function UnitEconomics({ sliders, setSliders }) {
   const ltvValue = ltv(sliders.price, sliders.margin, sliders.churn);
   const ratio = ltvToCacRatio(ltvValue, sliders.cac);
   const payback = paybackMonths(sliders.cac, sliders.price, sliders.margin);
+  const acvValue = estimateAcv(sliders.price, sliders.churn);
+  const lifespanYears = avgLifespanYears(sliders.churn);
 
   const ratioTone = ratioColor(ratio);
   const paybackTone = paybackColor(payback);
@@ -72,6 +85,8 @@ export default function UnitEconomics({ sliders, setSliders }) {
   const cacLabel = formatUsd(sliders.cac);
   const ratioLabel = Number.isFinite(ratio) ? `${ratio.toFixed(1)}x` : "Infinity";
   const paybackLabel = formatMonths(payback);
+  const acvLabel = formatUsd(acvValue);
+  const lifespanLabel = Number.isFinite(lifespanYears) ? `${lifespanYears.toFixed(1)} years` : "Infinity";
 
   const interpretation = (() => {
     const paybackNum = payback;
@@ -141,11 +156,13 @@ export default function UnitEconomics({ sliders, setSliders }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-3">
         <MetricCard title="LTV" value={ltvLabel} sub={`LTV = (price x margin%) / churn%`} />
         <MetricCard title="CAC" value={cacLabel} sub="Blended CAC used in ratio and payback" />
         <MetricCard title="LTV:CAC" value={ratioLabel} sub="Green >= 3x, yellow 2-3x, red < 2x" tone={ratioTone} />
         <MetricCard title="Payback" value={paybackLabel} sub="Green <= 12mo, yellow 12-18mo, red > 18mo" tone={paybackTone} />
+        <MetricCard title="Est. ACV" value={acvLabel} sub="Annual contract value" />
+        <MetricCard title="Avg lifespan" value={lifespanLabel} />
       </div>
 
       <div className="bg-gray-950/20 border border-gray-800 rounded-lg p-4">
