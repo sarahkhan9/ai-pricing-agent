@@ -76,9 +76,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-950">
       <div className="mx-auto max-w-6xl px-4 py-10">
-        <h1 className="font-mono text-yellow-400 text-sm tracking-wide mb-6 uppercase">
-          AI Pricing Model Agent
-        </h1>
+        <h1 className="font-mono text-yellow-400 text-sm tracking-wide uppercase">
+  AI Pricing Model Agent
+</h1>
+<p className="text-gray-300 text-xl font-semibold mt-2 mb-2">
+  See how any company prices — and where the gaps are.
+</p>
+<p className="text-gray-500 text-sm mb-6">
+  Type a company name and get a full pricing breakdown with competitive gaps and unit economics in 30 seconds.
+</p>
 
         <SearchBar
           value={companyInput}
@@ -105,8 +111,8 @@ export default function App() {
           </div>
         ) : (
           <div className="mt-10 text-gray-400 text-sm leading-relaxed">
-            Type a company and build an interactive unit economics model.
-          </div>
+  Try it on a competitor, a company you're researching, or one you're interviewing at. Results in 30 seconds.
+</div>
         )}
       </div>
     </div>
