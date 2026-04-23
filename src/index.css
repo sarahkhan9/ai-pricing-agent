@@ -5,5 +5,7 @@
 /* Minimal typography tuning for an internal-tool feel. */
 body {
   font-feature-settings: "ss01" 1, "ss02" 1;
+  background-color: #f5f4f0;
+  color: #1c1917;
 }
 
