@@ -27,7 +27,7 @@ async function parseErrorMessage(res, fallbackPrefix) {
   }
 }
 
-export default function App() {
+export default function App({ onRunLogged }) {
   const [companyInput, setCompanyInput] = useState("Mercury");
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -71,6 +71,13 @@ export default function App() {
         churn: Number(data.churn),
         cac: Number(data.cac),
       });
+      if (!demo && typeof onRunLogged === "function") {
+        onRunLogged({
+          tool: "Competitive Intel",
+          company,
+          timestamp: Date.now(),
+        });
+      }
     } catch (e) {
       setError(e?.message || "Failed to analyze company. Please try again.");
     } finally {

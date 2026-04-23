@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Analytics } from "@vercel/analytics/react";
 import posthog from "posthog-js";
-import App from "./App.jsx";
+import ShellApp from "./ShellApp.jsx";
 import "./index.css";
 
 console.log("PH key present:", !!import.meta.env.VITE_POSTHOG_KEY);
@@ -19,9 +19,7 @@ posthog.init(posthogKey, {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <>
-      <App />
-      <Analytics />
-    </>
+    <ShellApp />
+    <Analytics />
   </React.StrictMode>,
 );
