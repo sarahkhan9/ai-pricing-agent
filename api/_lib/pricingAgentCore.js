@@ -14,7 +14,7 @@ dotenv.config({ path: ENV_PATH });
 export const BENCHMARK_NOTICE =
   "Using industry benchmarks for this analysis. Assumptions based on public data and comparable company research.";
 
-export const MODEL = "claude-sonnet-4-20250514";
+export const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-5";
 
 function sanitizeAnthropicApiKey(raw) {
   if (raw == null) return "";
