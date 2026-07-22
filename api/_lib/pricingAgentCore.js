@@ -225,7 +225,7 @@ export async function runAnalyze(body) {
   try {
     const msg = await anthropic.messages.create({
       model: MODEL,
-      max_tokens: 1200,
+      max_tokens: 4000,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -273,7 +273,7 @@ export async function runChat(body) {
   try {
     const msg = await anthropic.messages.create({
       model: MODEL,
-      max_tokens: 700,
+      max_tokens: 2000,
       system: systemPrompt,
       messages: safeMessages,
     });
